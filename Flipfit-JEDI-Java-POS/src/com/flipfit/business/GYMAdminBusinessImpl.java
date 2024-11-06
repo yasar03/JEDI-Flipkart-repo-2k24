@@ -8,7 +8,7 @@ public class GYMAdminBusinessImpl implements GYMAdminBusiness {
     }
     
     @Override
-    public void addGYM(int gymId, String gymName, String gymAddress) {
+    public void addGYM(int gymId, String gymName, String gymAddress, int numberOfSlots, int[] slots) {
         System.out.println("GYM added successfully");
     }
     

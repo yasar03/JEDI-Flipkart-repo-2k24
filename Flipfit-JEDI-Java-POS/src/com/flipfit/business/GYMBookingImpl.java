@@ -1,6 +1,6 @@
 package com.flipfit.business;
 
-public class BookingImpl implements Booking {
+public class GYMBookingImpl implements GYMBooking {
     public void confirmBooking(int userId, int slotId) {
         System.out.println("Booking confirmed successfully");
     }

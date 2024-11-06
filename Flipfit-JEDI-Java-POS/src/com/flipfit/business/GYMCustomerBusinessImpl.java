@@ -22,9 +22,10 @@ public class GYMCustomerBusinessImpl implements GYMCustomerBusiness {
     }
     
     @Override
-    public void listCustomer() {
+    public void viewProfile() {
         System.out.println("Customer listed");
     }
+    
     
     @Override
     public void viewBookings(int customerId) {
@@ -32,8 +33,23 @@ public class GYMCustomerBusinessImpl implements GYMCustomerBusiness {
     }
     
     @Override
+    public void makePayment(int customerId, int paymentId) {
+        System.out.println("Payment made");
+    }
+    
+    @Override
     public void makeBooking(int customerId, int slotId) {
         System.out.println("Booking made");
+    }
+    
+    @Override
+    public void viewList() {
+        System.out.println("List of GYMs");
+    }
+    
+    @Override
+    public void viewSlots() {
+        System.out.println("List of slots");
     }
     
     @Override

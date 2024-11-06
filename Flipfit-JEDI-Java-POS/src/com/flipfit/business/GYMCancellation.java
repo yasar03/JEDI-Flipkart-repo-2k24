@@ -1,5 +1,5 @@
 package com.flipfit.business;
 
-public interface Cancellation {
+public interface GYMCancellation {
     public void makePayment(int paymentId);
 }

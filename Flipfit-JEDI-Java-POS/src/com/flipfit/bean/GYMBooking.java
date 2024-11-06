@@ -2,7 +2,7 @@ package com.flipfit.bean;
 
 import java.util.Date;
 
-public class Booking {
+public class GYMBooking {
     public Long bookingId;
     public Date bookingTime;
     public Long userId;
