@@ -41,16 +41,18 @@ public class CustomerDAOImpl implements CustomerDAO{
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
+//		System.out.println(gyms);
 		return gyms;
+		
 	}
 
-	public void fetchSlotList(int gymId) throws NoSlotsFoundException {
+	public void fetchSlotList(String gymId) throws NoSlotsFoundException {
 		Connection connection = null;
 		String query = "Select * From Slot Where gymId=?";
 		try {connection = DBUtils.getConnection();
 		PreparedStatement statement = connection.prepareStatement(query);
 			System.out.println(statement);
-			statement.setInt(1, gymId);
+			statement.setString(1, gymId);
 			ResultSet output = statement.executeQuery();
 			if (!output.next()) {
 				throw new NoSlotsFoundException("No slot found");
@@ -90,16 +92,16 @@ public class CustomerDAOImpl implements CustomerDAO{
 		}
 	}
 	
-	public void bookSlots(String bookingId, String slotId, String gymId, String type, Date date, String customerEmail) {
+	public void bookSlots(String bookingId, String slotId, String gymId, String type, String date, String customerEmail) {
 		Connection connection = null;
-		String query = "INSERT INTO Booking (bookingId,slotId,gymId,type,date,customerEmail) values(?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO Booking (bookingId,slotId,gymId,type,date,customerEmail) values(?, ?, ?,?, ?, ?)";
 		try {connection = DBUtils.getConnection();
 		PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, bookingId);
 			statement.setString(2, slotId);
 			statement.setString(3, gymId);
 			statement.setString(4, type);
-			statement.setDate(5, (java.sql.Date)date);
+			statement.setString(5, date);
 			statement.setString(6, customerEmail);
 			statement.executeUpdate();
 			System.out.println("-----------------------------------------------");

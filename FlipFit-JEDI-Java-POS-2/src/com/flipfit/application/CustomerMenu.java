@@ -1,5 +1,7 @@
 package com.flipfit.application;
 
+import com.flipfit.bean.Booking;
+import com.flipfit.utils.IdGenerator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,6 +17,17 @@ public class CustomerMenu {
 	Customer customer = new Customer();
 	CustomerBusiness customerBusiness = new CustomerBusiness();
 	Scanner sc = new Scanner(System.in);
+	
+	public void addBooking(String slotId, String gymId, String date, String email) {
+		Booking booking = new Booking();
+		String bookingId = IdGenerator.generateId("Booking");
+		booking.setBookingId(bookingId);
+		booking.setSlotId(slotId);
+		booking.setGymId(gymId);
+		booking.setDate(date);
+		booking.setCustomerEmail(email);
+		customerBusiness.bookSlot(bookingId, slotId, gymId, date, email);
+	}
 
 	public void registerCustomer() {
 		System.out.print("Enter email: ");
@@ -37,38 +50,59 @@ public class CustomerMenu {
 	}
 
 	public void viewGyms(String email) throws ParseException {
-		getGyms();
+//		getGyms();
+		CustomerBusiness customerBusiness = new CustomerBusiness();
+		System.out.println(customerBusiness.fetchGymList());
+		
+		List<Gym> gym = customerBusiness.fetchGymList();
+		
+		for(Gym g:gym) {
+			System.out.println("Gym ID: "+g.getGymId());
+			System.out.println("Gym Name: "+g.getGymName());
+			System.out.println("Gym Owner Email: "+g.getOwnerEmail());
+			System.out.println("Gym Address: "+g.getAddress());
+			System.out.println("Gym Approval Status: "+g.isVerified());
+//			customerBusiness.fetchSlotList(g.getGymId());
+			
+//			for(Slot s:slots) {
+//				System.out.println("Slot ID: "+s.getSlotId());
+////				System.out.println("Slot Start Time: "+s.getStartTime());
+////				System.out.println("Slot End Time: "+s.getEndTime());
+//				System.out.println("Slot Availability: "+customerBusiness.isSlotBooked(s.getSlotId(), new Date()));
+//			}
+		}
 		System.out.print("Enter gym ID: ");
 		String gymId = sc.next();
 		System.out.print("Enter Date (yyyy-mm-dd): ");
 		String dateStr = sc.next();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = dateFormat.parse(dateStr);
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = dateFormat.parse(dateStr);
 
-		List<Slot> slots = customerBusiness.getSlotInGym(gymId);
-		for (Slot slot : slots) {
-			System.out.print("Slot Id: " + slot.getSlotId());
-			System.out.print("Availability: " + customerBusiness.isSlotBooked(slot.getSlotId(), date));
-		}
+		customerBusiness.fetchSlotList(gymId);
+//		for (Slot slot : slots) {
+//			System.out.print("Slot Id: " + slot.getSlotId());
+//			System.out.print("Availability: " + customerBusiness.isSlotBooked(slot.getSlotId(), date));
+//		}
 		System.out.print("Enter the slot ID which you want to book: ");
 		String slotId = sc.next();
-		int bookingResponse = customerBusiness.bookSlot(gymId,slotId, email, date);
-		switch (bookingResponse) {
-		case 0:
-			System.out.println("You have already booked this time. Cancelling the previous one and booking this slot");
-			break;
-		case 1:
-			System.out.println("Slot is already booked, added to the waiting list");
-			break;
-		case 2:
-			System.out.println("Successfully booked the slot");
-			break;
-		case 3:
-			System.out.println("Slot not found");
-			break;
-		default:
-			System.out.println("Booking failed");
-		}
+		
+			addBooking(gymId,slotId, dateStr, email);
+//		switch (bookingResponse) {
+//		case 0:
+//			System.out.println("You have already booked this time. Cancelling the previous one and booking this slot");
+//			break;
+//		case 1:
+//			System.out.println("Slot is already booked, added to the waiting list");
+//			break;
+//		case 2:
+//			System.out.println("Successfully booked the slot");
+//			break;
+//		case 3:
+//			System.out.println("Slot not found");
+//			break;
+//		default:
+//			System.out.println("Booking failed");
+//		}
 	}
 
 	public void editProfile(String email) {

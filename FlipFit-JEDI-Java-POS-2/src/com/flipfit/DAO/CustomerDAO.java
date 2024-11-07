@@ -9,11 +9,11 @@ import com.flipfit.exception.NoSlotsFoundException;
 public interface CustomerDAO {
 	public List<Gym> fetchGymList();
 
-	public void fetchSlotList(int gymId) throws NoSlotsFoundException;
+	public void fetchSlotList(String gymId) throws NoSlotsFoundException;
 
 	public void fetchBookedSlots(String email);
 
-	public void bookSlots(String bookingId, String slotId, String gymId, String type, Date date, String customerEmail);
+	public void bookSlots(String bookingId, String slotId, String gymId, String type, String date, String customerEmail);
 
 	public boolean isFull(String slotId, String date);
 

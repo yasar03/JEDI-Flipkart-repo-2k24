@@ -221,7 +221,7 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 	public List<Gym> getGymsOfGymOwner(String gymOwnerId) {
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
-		String query = "select gymId, gymName, ownerEmail, address, slotCount, seatsPerSlotCount, isVerified from gym where gymOwnerEmail =  ?";
+		String query = "select gymId, gymName, ownerEmail, address, slotCount, seatsPerSlotCount, isVerified from gym where ownerEmail =  ?";
 		try {connection = DBUtils.getConnection();
 
 				// Step 2:Create a statement using connection object
@@ -236,10 +236,10 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 				Gym gym = new Gym();
 				gym.setGymId(rs.getString("gymId"));
 				gym.setGymName(rs.getString("gymName"));
-				gym.setOwnerEmail(rs.getString("gymOwnerEmail"));
+				gym.setOwnerEmail(rs.getString("ownerEmail"));
 				gym.setAddress(rs.getString("address"));
 				gym.setSlotCount(rs.getInt("slotCount"));
-				gym.setSeatsPerSlotCount(rs.getInt("seatsPerSlot"));
+				gym.setSeatsPerSlotCount(rs.getInt("seatsPerSlotCount"));
 				gym.setVerified(rs.getBoolean("isVerified"));
 				gyms.add(gym);
 //	                System.out.println(id + "," + name + "," + email + "," + country + "," + password);

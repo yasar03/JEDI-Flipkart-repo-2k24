@@ -32,12 +32,12 @@ public interface CustomerBusinessInterface{
     returns the list of slots in a gym
     */
 
-    public int bookSlot(String gymId, String slotId, String email, Date date);
+    public void bookSlot(String bookingId, String gymId, String slotId, String email, String date);
     /*
     allows the customer to book a slot
     */
 
-    public boolean isSlotBooked(String slotId, Date date);
+    public boolean isSlotBooked(String slotId, String date);
     /*
     returns true if the slot is fully booked else returns false
     */
