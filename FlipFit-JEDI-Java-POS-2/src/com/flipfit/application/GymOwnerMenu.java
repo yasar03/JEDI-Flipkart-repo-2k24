@@ -1,5 +1,6 @@
 package com.flipfit.application;
 
+import com.flipfit.exception.InvalidInputException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -71,7 +72,7 @@ public class GymOwnerMenu {
 		System.out.println("\n______________________________________________________________");
 	}
 
-	public void addGym(Scanner in, String email) {
+	public void addGym(Scanner in, String email) throws InvalidInputException {
 		System.out.println("Please Enter Gym Details ");
 
 		Gym gym = new Gym();
@@ -82,12 +83,18 @@ public class GymOwnerMenu {
 		System.out.print("Address: ");
 		gym.setAddress(in.next());
 		System.out.print("SlotCount: ");
-		gym.setSlotCount(in.nextInt());
+		String slotCount = in.next();
+//		gym.setSlotCount(slotCount);
 		System.out.print("SeatsPerSlotCount: ");
-		gym.setSeatsPerSlotCount(in.nextInt());
+		String seatPerSlotCount = in.next();
+//		gym.setSeatsPerSlotCount(seatPerSlotCount);
 		gym.setVerified(false);
 
-		gymOwnerBusiness.addGym(gym);
+		try {
+			gymOwnerBusiness.addGym(gym, slotCount, seatPerSlotCount);
+		} catch (InvalidInputException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void editGym(Scanner in, String email) {
@@ -136,7 +143,7 @@ public class GymOwnerMenu {
 		gymOwnerBusiness.addSlot(slot);
 	}
 
-	public void gymOwnerMenu(Scanner in, String email) {
+	public void gymOwnerMenu(Scanner in, String email) throws InvalidInputException {
 		boolean recur = true;
 		while (recur) {
 			System.out.println("\nHere are the actions you can perform!");

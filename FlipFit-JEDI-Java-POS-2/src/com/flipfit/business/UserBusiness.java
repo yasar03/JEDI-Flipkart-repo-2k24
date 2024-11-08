@@ -8,6 +8,7 @@ import com.flipfit.DAO.UserDAOImpl;
 import com.flipfit.bean.Customer;
 import com.flipfit.bean.GymOwner;
 import com.flipfit.bean.User;
+import com.flipfit.exception.UnauthorizedAccessException;
 
 /**
  * 
@@ -41,8 +42,12 @@ public class UserBusiness implements UserBusinessInterface{
 	*/
 	public boolean authenticateUser(User user) {
 		boolean authenticateSuccess = false;
-		authenticateSuccess = userDao.authenticateUser(user);
-		return authenticateSuccess;
+//        try {
+            authenticateSuccess = userDao.authenticateUser(user);
+//        } catch (UnauthorizedAccessException e) {
+//            throw new RuntimeException(e);
+//        }
+        return authenticateSuccess;
 	}
 	/**
 	Logs out a user.

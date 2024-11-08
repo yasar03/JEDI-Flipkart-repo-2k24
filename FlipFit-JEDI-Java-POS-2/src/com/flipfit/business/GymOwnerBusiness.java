@@ -7,8 +7,9 @@ import com.flipfit.bean.Gym;
 import com.flipfit.bean.GymOwner;
 import com.flipfit.bean.Slot;
 import com.flipfit.DAO.*;
-import com.flipfit.constants.ColorConstants;
+import com.flipfit.constants.*;
 
+import com.flipfit.exception.InvalidInputException;
 import java.util.*;
 
 /**
@@ -23,21 +24,42 @@ public class GymOwnerBusiness implements GymOwnerBusinessInterface {
 	 * @return GymOwner the gym owner object
 	 */
 	public GymOwner getProfile(String email) {
-		System.out.println(ColorConstants.GREEN +"Fetched Gym owner details successfully! " + email+ColorConstants.RESET);
+		System.out.println("Fetched Gym owner details successfully! ");
 		return gymOwnerDAO.getGymOwnerDetails(email);
 	}
 	
 	public void editProfile(GymOwner gymOwnerNew) {
 		gymOwnerDAO.editGymOwnerDetails(gymOwnerNew);
-		System.out.println(ColorConstants.GREEN + "\nEdited your profile Successfully!" + ColorConstants.RESET);
+		System.out.println("\nEdited your profile Successfully!");
 	}
 	/**
 	 * This method allows a gym owner to add details of a particular gym.
-	 * @param gym the gym object representing the gym details
 	 */
-	public boolean addGym(Gym gym) {
+	public static boolean isInteger(String str) {
+		try {
+			Integer.parseInt(str);  // Try to parse the String as Integer
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	public boolean addGym(Gym gym, String slotCount, String seatPerSlotCount) throws InvalidInputException {
+//		Integer n1 = slotCount;
+		
+		if(!isInteger(slotCount)) {
+			throw new InvalidInputException("Invalid slot count value!");
+			
+		}
+		
+		if(!isInteger(seatPerSlotCount)) {
+			throw new InvalidInputException("Invalid seat per slot count value!");
+		}
+		
+		gym.setSlotCount(Integer.parseInt(slotCount));
+		gym.setSeatsPerSlotCount(Integer.parseInt(seatPerSlotCount));
+		
 		gymOwnerDAO.addGym(gym);
-		System.out.println(ColorConstants.GREEN + "\nAdded Gym Successfully!" + gym.getGymId() + ColorConstants.RESET );
+		System.out.println("\nAdded Gym Successfully!" + gym.getGymId());
 		return true;
 	}
 	/**
@@ -46,7 +68,7 @@ public class GymOwnerBusiness implements GymOwnerBusinessInterface {
 	 */
 	public void editGym(Gym gym) {
 		gymOwnerDAO.editGym(gym);
-		System.out.println(ColorConstants.GREEN + "\nEdited Gym Details Successfully! " + gym.getGymId()+ ColorConstants.RESET );
+		System.out.println("\nEdited Gym Details Successfully! " + gym.getGymId());
 	}
 	/**
 	 * Obtains all the gyms that owned by the given gym owner.
@@ -54,7 +76,7 @@ public class GymOwnerBusiness implements GymOwnerBusinessInterface {
 	 * @return list of gyms owned by the given gym owner
 	 */
 	public List<Gym> getGymDetail(String gymOwnerEmail) {
-		System.out.println(ColorConstants.GREEN +"\nFetched gym details successfully! " + gymOwnerEmail+ ColorConstants.RESET);
+		System.out.println("\nFetched gym details successfully! " + gymOwnerEmail);
 		return gymOwnerDAO.getGymsOfGymOwner(gymOwnerEmail);
 	}
 	/**
@@ -63,7 +85,7 @@ public class GymOwnerBusiness implements GymOwnerBusinessInterface {
 	 */
 	public void addSlot(Slot slot) {
 		gymOwnerDAO.addSlot(slot);
-		System.out.println(ColorConstants.GREEN + "\nAdded slot successfully!"+ ColorConstants.RESET);
+		System.out.println("\nAdded slot successfully!");
 	}
 	/**
 	 * Checks if the gym owner is verified or not.

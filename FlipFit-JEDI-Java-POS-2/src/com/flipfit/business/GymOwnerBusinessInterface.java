@@ -1,6 +1,7 @@
 package com.flipfit.business;
 
 import com.flipfit.bean.*;
+import com.flipfit.exception.InvalidInputException;
 import java.util.*;
 
 public interface GymOwnerBusinessInterface{
@@ -13,7 +14,7 @@ public interface GymOwnerBusinessInterface{
 allows the gym owner to edit profile
      */
 
-    public boolean addGym(Gym gym);
+    public boolean addGym(Gym gym, String slotCount, String seatCountPerSlot) throws InvalidInputException;
     /*
 allows the gym owner to add new gym
      */

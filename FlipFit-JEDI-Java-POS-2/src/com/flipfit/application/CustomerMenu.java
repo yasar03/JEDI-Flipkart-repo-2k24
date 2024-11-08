@@ -1,6 +1,8 @@
 package com.flipfit.application;
 
 import com.flipfit.bean.Booking;
+import com.flipfit.exception.GymNotFoundException;
+import com.flipfit.exception.NoSlotsFoundException;
 import com.flipfit.utils.IdGenerator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +20,7 @@ public class CustomerMenu {
 	CustomerBusiness customerBusiness = new CustomerBusiness();
 	Scanner sc = new Scanner(System.in);
 	
-	public void addBooking(String slotId, String gymId, String date, String email) {
+	public void addBooking(String gymId, String slotId, String date, String email) {
 		Booking booking = new Booking();
 		String bookingId = IdGenerator.generateId("Booking");
 		booking.setBookingId(bookingId);
@@ -26,7 +28,7 @@ public class CustomerMenu {
 		booking.setGymId(gymId);
 		booking.setDate(date);
 		booking.setCustomerEmail(email);
-		customerBusiness.bookSlot(bookingId, slotId, gymId, date, email);
+		customerBusiness.bookSlot(bookingId, gymId, slotId, date, email);
 	}
 
 	public void registerCustomer() {
@@ -77,16 +79,27 @@ public class CustomerMenu {
 		String dateStr = sc.next();
 //		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //		Date date = dateFormat.parse(dateStr);
-
-		customerBusiness.fetchSlotList(gymId);
+        
+        try {
+            customerBusiness.fetchSlotList(gymId);
+			System.out.print("Enter the slot ID which you want to book: ");
+			String slotId = sc.next();
+			addBooking(gymId,slotId, dateStr, email);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+			
+        }
 //		for (Slot slot : slots) {
 //			System.out.print("Slot Id: " + slot.getSlotId());
 //			System.out.print("Availability: " + customerBusiness.isSlotBooked(slot.getSlotId(), date));
 //		}
-		System.out.print("Enter the slot ID which you want to book: ");
-		String slotId = sc.next();
+
 		
-			addBooking(gymId,slotId, dateStr, email);
+//			try {
+
+//			} catch (GymNotFoundException e) {
+//				System.out.println(e.getMessage());
+//			}
 //		switch (bookingResponse) {
 //		case 0:
 //			System.out.println("You have already booked this time. Cancelling the previous one and booking this slot");

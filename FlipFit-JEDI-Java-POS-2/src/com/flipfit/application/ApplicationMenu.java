@@ -15,11 +15,11 @@ public class ApplicationMenu {
 		String userEmail = in.next();
 		System.out.print("Enter Password: ");
 		String password = in.next();
-		System.out.print("Enter Role Name(GymOwner/Customer): ");
+		System.out.print("Enter Role Name(GymOwner/GymCustomer/GymAdmin): ");
 		String roleId = in.next();
 		User user = new User(userEmail, password, roleId);
 		UserBusiness userBusiness = new UserBusiness();
-		if (roleId.equalsIgnoreCase("Admin")) {
+		if (roleId.equalsIgnoreCase("GymAdmin")) {
 			AdminMenu admin = new AdminMenu();
 			admin.adminMenu(in);
 		} 
@@ -27,7 +27,7 @@ public class ApplicationMenu {
 			System.out.println("__________________________________________________________________________________\n");
 			System.out.println("Welcome " + userEmail + "! You are logged in.");
 
-			if (roleId.equalsIgnoreCase("Customer")) {
+			if (roleId.equalsIgnoreCase("GymCustomer")) {
 
 				CustomerMenu customer = new CustomerMenu();
 				customer.customerMenu(userEmail);
@@ -54,7 +54,8 @@ public class ApplicationMenu {
 			System.out.println("1. Login");
 			System.out.println("2. Customer Registration");
 			System.out.println("3. Gym Owner Registration");
-			System.out.println("4. Exit");
+			System.out.println("4. Update password");
+			System.out.println("5. Exit");
 			System.out.print("\nEnter Your Choice: ");
 
 			Scanner in = new Scanner(System.in);
@@ -75,6 +76,8 @@ public class ApplicationMenu {
 				login();
 				break;
 			case 4:
+				break;
+			case 5:
 				System.out.println("Exiting...");
 				System.out.println("Exited Successfully");
 				recur = false;

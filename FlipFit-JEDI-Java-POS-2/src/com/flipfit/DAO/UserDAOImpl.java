@@ -1,5 +1,6 @@
 package com.flipfit.DAO;
 
+import com.flipfit.exception.UnauthorizedAccessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import com.flipfit.utils.DBUtils;
 
 public class UserDAOImpl implements UserDAO {
 
-	public boolean authenticateUser(User user) {
+	public boolean authenticateUser(User user){
 		// to run without authentication, make isUserValid = true
 		Connection connection = null;
 		
@@ -23,6 +24,9 @@ public class UserDAOImpl implements UserDAO {
 			preparedStatement.setString(1, user.getEmail());
 
 			ResultSet rs = preparedStatement.executeQuery();
+//			if(!rs.next()) {
+//				throw new UnauthorizedAccessException("User not found");
+//			}
 			while (rs.next()) {
 				if (user.getPassword().equals(rs.getString("password"))
 						&& user.getRoleId().equalsIgnoreCase(rs.getString("role"))) {
@@ -60,7 +64,7 @@ public class UserDAOImpl implements UserDAO {
 
 			preparedStatementUser.setString(1, customer.getEmail());
 			preparedStatementUser.setString(2, customer.getPassword());
-			preparedStatementUser.setString(3, "Customer");
+			preparedStatementUser.setString(3, "GymCustomer");
 
 			rowsAffected = preparedStatementUser.executeUpdate();
 			if (rowsAffected != 0)

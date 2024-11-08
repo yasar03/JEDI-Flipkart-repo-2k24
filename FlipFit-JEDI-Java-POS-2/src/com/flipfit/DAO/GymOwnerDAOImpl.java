@@ -1,5 +1,7 @@
 package com.flipfit.DAO;
 
+import com.flipfit.exception.GymNotFoundException;
+import com.flipfit.exception.InvalidInputException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -197,7 +199,8 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 		System.out.println(INSERT_GYM_SQL);
 		// Step 1: Establishing a Connection
 		try {connection = DBUtils.getConnection();
-
+				
+			
 				// Step 2:Create a statement using connection object
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_GYM_SQL);
 			preparedStatement.setString(1, gymDetails.getGymId());
@@ -208,6 +211,8 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 			preparedStatement.setInt(6, gymDetails.getSeatsPerSlotCount());
 			preparedStatement.setBoolean(7, gymDetails.isVerified());
 			preparedStatement.setString(8, gymDetails.getGymId());
+			
+			
 
 			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query

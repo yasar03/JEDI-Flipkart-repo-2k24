@@ -6,7 +6,8 @@ package com.flipfit.business;
 import com.flipfit.DAO.CustomerDAO;
 import com.flipfit.DAO.CustomerDAOImpl;
 import com.flipfit.bean.*;
-import com.flipfit.constants.ColorConstants;
+import com.flipfit.constants.*;
+import com.flipfit.exception.GymNotFoundException;
 import com.flipfit.exception.NoSlotsFoundException;
 import com.flipfit.utils.IdGenerator;
 
@@ -69,17 +70,29 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 	CustomerDAO customerDAO = new CustomerDAOImpl();
 	
 	public List<Gym> fetchGymList() {
-		System.out.println(ColorConstants.GREEN + "Fetched Gym list successfully!" + ColorConstants.RESET);
-		return customerDAO.fetchGymList();
-	}
-	
-	public void fetchSlotList(String gymId) {
-		System.out.println(ColorConstants.GREEN + "Fetched Slot list successfully!" + ColorConstants.RESET);
+		System.out.println("Fetched Gym list successfully!");
         try {
-            customerDAO.fetchSlotList(gymId);
-        } catch (NoSlotsFoundException e) {
+            return customerDAO.fetchGymList();
+        } catch (GymNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+	
+	public void fetchSlotList(String gymId) throws NoSlotsFoundException, GymNotFoundException {
+		System.out.println("Fetched Slot list successfully!");
+//        try {
+//            customerDAO.fetchSlotList(gymId);
+//        } catch (Exception e) {
+//            throw new NoSlotsFoundException("Gym not found");
+//        }
+		try {
+			// Call the business layer method to fetch the slot list
+			customerDAO.fetchSlotList(gymId);
+		} catch (GymNotFoundException | NoSlotsFoundException e) {
+//			System.out.println(e.getMessage());
+			
+			throw e;
+		}
     }
 	
 	/**
@@ -107,7 +120,7 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 				cust.setAge(customer.getAge());
 				cust.setAddress(customer.getAddress());
 				customers.add(cust);
-				System.out.println(ColorConstants.GREEN+"Successfully edited your profile\ns"+ColorConstants.RESET);
+				System.out.println("Successfully edited your profile\ns");
 				break;
 			}
 		}
@@ -139,7 +152,7 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 		for (Booking booking : bookings) {
 			if (booking.getBookingId().equals(bookingId)) {
 				bookings.remove(booking);
-				System.out.println(ColorConstants.GREEN + "Successfully cancelled your booking" + ColorConstants.RESET);
+				System.out.println("Successfully cancelled your booking");
 				return true;
 			}
 		}
@@ -183,8 +196,12 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 	public void bookSlot(String bookingId, String gymId, String slotId, String email, String date) {
 //		List<Booking> tempBookings = getBookings(email);
 		CustomerDAO customerDAO = new CustomerDAOImpl();
-		customerDAO.bookSlots(bookingId, gymId, slotId, "", date, email);
-		
+        try {
+            customerDAO.bookSlots(bookingId, slotId, gymId, "", date, email);
+        } catch (GymNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
 //		boolean flag=false;
 //		for(Booking booking:bookings)
 //		{

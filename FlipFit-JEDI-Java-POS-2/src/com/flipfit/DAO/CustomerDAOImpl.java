@@ -14,7 +14,7 @@ import com.flipfit.utils.DBUtils;
 
 public class CustomerDAOImpl implements CustomerDAO{
 
-	public List<Gym> fetchGymList() {
+	public List<Gym> fetchGymList() throws GymNotFoundException{
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
 		String query = "select gymId, gymName, ownerEmail, address, slotCount, seatsPerSlotCount, isVerified from gym";
@@ -24,7 +24,10 @@ public class CustomerDAOImpl implements CustomerDAO{
 			System.out.println(statement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = statement.executeQuery();
-
+			
+			if(!rs.next()) {
+				throw new GymNotFoundException("No gyms found");
+			}
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				Gym gym = new Gym();
@@ -46,7 +49,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 		
 	}
 
-	public void fetchSlotList(String gymId) throws NoSlotsFoundException {
+	public void fetchSlotList(String gymId) throws GymNotFoundException, NoSlotsFoundException {
 		Connection connection = null;
 		String query = "Select * From Slot Where gymId=?";
 		try {connection = DBUtils.getConnection();
@@ -55,16 +58,22 @@ public class CustomerDAOImpl implements CustomerDAO{
 			statement.setString(1, gymId);
 			ResultSet output = statement.executeQuery();
 			if (!output.next()) {
-				throw new NoSlotsFoundException("No slot found");
+				throw new GymNotFoundException("No gym found");
 			}
+			boolean slotsFound = false;
+			
 			System.out.println("SlotId \t Capacity \t SlotTime \t GymId");
 			do {
 				System.out.printf("%-7s\t", output.getString(1));
-				System.out.printf("  %-9s\t", output.getString(2));
+				System.out.printf("  %-9s\t", output.getString(6));
 				System.out.printf("  %-9s\t", output.getString(3));
-				System.out.printf("  %-9s\t", output.getString(4));
+				System.out.printf("  %-9s\t", output.getString(2));
 				System.out.println("");
+				slotsFound = true;
 			} while (output.next());
+			if (!slotsFound) {
+				throw new NoSlotsFoundException("No slots found");
+			}
 			System.out.println("-----------------------------------------------");
 		} catch (SQLException sqlExcep) {
 			printSQLException(sqlExcep);
@@ -92,7 +101,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 		}
 	}
 	
-	public void bookSlots(String bookingId, String slotId, String gymId, String type, String date, String customerEmail) {
+	public void bookSlots(String bookingId, String slotId, String gymId, String type, String date, String customerEmail) throws GymNotFoundException {
 		Connection connection = null;
 		String query = "INSERT INTO Booking (bookingId,slotId,gymId,type,date,customerEmail) values(?, ?, ?,?, ?, ?)";
 		try {connection = DBUtils.getConnection();
@@ -103,7 +112,11 @@ public class CustomerDAOImpl implements CustomerDAO{
 			statement.setString(4, type);
 			statement.setString(5, date);
 			statement.setString(6, customerEmail);
-			statement.executeUpdate();
+			int output = statement.executeUpdate();
+			if(output == 0) {
+				throw new GymNotFoundException("Gym not found");
+			}
+			System.out.println("Slot Booked Successfully, your booking ID is: "+bookingId);
 			System.out.println("-----------------------------------------------");
 		} catch (SQLException sqlExcep) {
 			printSQLException(sqlExcep);
