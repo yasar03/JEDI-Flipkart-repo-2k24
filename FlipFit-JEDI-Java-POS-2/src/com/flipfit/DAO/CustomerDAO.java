@@ -11,6 +11,8 @@ public interface CustomerDAO {
 	public List<Gym> fetchGymList() throws GymNotFoundException;
 
 	public void fetchSlotList(String gymId) throws GymNotFoundException, NoSlotsFoundException;
+	
+	public void makePayment(String paymentId, String cardNumber, String cvv, String expiry, String upiId, String email);
 
 	public void fetchBookedSlots(String email);
 
@@ -20,9 +22,11 @@ public interface CustomerDAO {
 
 	public boolean alreadyBooked(String slotId, String email, String date);
 
-	public void cancelBooking(String slotId, String email, String date);
+	public void cancelBooking(String slotId, String email);
 
 	public boolean checkSlotExists(String slotId, String gymId);
 
 	public boolean checkGymApprove(String gymId);
+	
+	public void editProfile(String email, String name, String phoneNumber, int age, String address);
 }

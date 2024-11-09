@@ -111,6 +111,25 @@ public class UserDAOImpl implements UserDAO {
 
 		return registerSuccess;
 	}
+	
+	public boolean updatePassword(String email, String password) {
+		Connection connection = null;
+		String query = "UPDATE user SET password = ? WHERE email = ?";
+		try {connection = DBUtils.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+			preparedStatement.setString(1, password);
+			preparedStatement.setString(2, email);
+
+			return preparedStatement.executeUpdate()==1;
+			
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+		
+		return false;
+	}
 
 	public static void printSQLException(SQLException ex) {
 		for (Throwable e : ex) {

@@ -25,9 +25,9 @@ public class CustomerDAOImpl implements CustomerDAO{
 			// Step 3: Execute the query or update query
 			ResultSet rs = statement.executeQuery();
 			
-			if(!rs.next()) {
-				throw new GymNotFoundException("No gyms found");
-			}
+//			if(!rs.next()) {
+//				throw new GymNotFoundException("No gyms found");
+//			}
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				Gym gym = new Gym();
@@ -90,7 +90,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 			ResultSet output = statement.executeQuery();
 			System.out.println("BookingId \t Date \t    GymId");
 			while (output.next()) {
-				System.out.printf("%-12s\t", output.getInt(1));
+				System.out.printf("%-12s\t", output.getString(1));
 				System.out.printf("  %-7s\t", output.getString(5));
 				System.out.printf("%-8s\t", output.getString(3));
 				System.out.println("");
@@ -117,6 +117,43 @@ public class CustomerDAOImpl implements CustomerDAO{
 				throw new GymNotFoundException("Gym not found");
 			}
 			System.out.println("Slot Booked Successfully, your booking ID is: "+bookingId);
+			System.out.println("-----------------------------------------------");
+		} catch (SQLException sqlExcep) {
+			printSQLException(sqlExcep);
+		}
+	}
+	
+	public void makePayment(String paymentId, String cardNumber, String cvv, String expiryDate, String upiId, String email) {
+		Connection connection = null;
+		String query = "INSERT INTO Payments (paymentId,cardNumber,cvv,expiryDate,upiId, email) values(?, ?, ?,?, ?, ?)";
+		try {connection = DBUtils.getConnection();
+		PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, paymentId);
+			statement.setString(2, cardNumber);
+			statement.setString(3, cvv);
+			statement.setString(4, expiryDate);
+			statement.setString(5, upiId);
+			statement.setString(6, email);
+			int output = statement.executeUpdate();
+			System.out.println("Payment Successful");
+			System.out.println("-----------------------------------------------");
+		} catch (SQLException sqlExcep) {
+			printSQLException(sqlExcep);
+		}
+	}
+	
+	public void editProfile(String email, String name, String phoneNumber, int age, String address) {
+		Connection connection = null;
+		String query = "Update Customer set name=?, phoneNumber=?, age=?, address=? where email=?";
+		try {connection = DBUtils.getConnection();
+		PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			statement.setString(2, phoneNumber);
+			statement.setInt(3, age);
+			statement.setString(4, address);
+			statement.setString(5, email);
+			int output = statement.executeUpdate();
+			System.out.println("Profile updated successfully");
 			System.out.println("-----------------------------------------------");
 		} catch (SQLException sqlExcep) {
 			printSQLException(sqlExcep);
@@ -162,14 +199,15 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return false;
 	}
 
-	public void cancelBooking(String slotId, String email, String date) {
+	public void cancelBooking(String bookingId, String email) {
 		Connection connection = null;
-		String query = "Delete from Booking where email = ? and slotId = ? and date = ?";
+		String query = "Delete from Booking where bookingId = ?";
 		try {connection = DBUtils.getConnection(); PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, email);
-			statement.setString(2, slotId);
-			statement.setString(3, date);
+//			statement.setString(1, email);
+			statement.setString(1, bookingId);
+//			statement.setString(3, date);
 			statement.executeUpdate();
+			System.out.println("Your booking has been cancelled");
 			System.out.println("-----------------------------------------------");
 		} catch (SQLException sqlExcep) {
 			printSQLException(sqlExcep);

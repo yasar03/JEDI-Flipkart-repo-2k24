@@ -1,11 +1,37 @@
 package com.flipfit.application;
 
+import com.flipfit.business.UserBusinessInterface;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.time.*;
 
 import com.flipfit.bean.User;
 import com.flipfit.business.UserBusiness;
 
 public class ApplicationMenu {
+	
+	public static void updatePassword() {
+		Scanner in = new Scanner(System.in);
+		System.out.println("__________________________________________________________________________________\n");
+		System.out.println("Enter Email to update password: ");
+		String userEmail = in.next();
+		System.out.println("Enter New Password: ");
+		String password = in.next();
+		System.out.println("Re-Enter New Password: ");
+		String rePassword = in.next();
+		if (!password.equals(rePassword)) {
+			System.out.println("Passwords do not match!");
+			return;
+		}
+		
+//		User user = new User(userEmail, password, "GymCustomer");
+		UserBusinessInterface userBusiness = new UserBusiness();
+		if (userBusiness.updatePassword(userEmail, password)) {
+			System.out.println("Password Updated Successfully!");
+		} else {
+			System.out.println("Password Update Failed!");
+		}
+	}
 
 	public static void login() throws Exception {
 		Scanner in = new Scanner(System.in);
@@ -26,6 +52,14 @@ public class ApplicationMenu {
 		else if (userBusiness.authenticateUser(user)) {
 			System.out.println("__________________________________________________________________________________\n");
 			System.out.println("Welcome " + userEmail + "! You are logged in.");
+			LocalDateTime loginTime = LocalDateTime.now();
+			
+			// Format the time for display
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			String formattedLoginTime = loginTime.format(formatter);
+			
+			// Print the login time
+			System.out.println("Login time: " + formattedLoginTime);
 
 			if (roleId.equalsIgnoreCase("GymCustomer")) {
 
@@ -76,6 +110,7 @@ public class ApplicationMenu {
 				login();
 				break;
 			case 4:
+				updatePassword();
 				break;
 			case 5:
 				System.out.println("Exiting...");

@@ -11,4 +11,6 @@ public interface UserDAO {
 	public boolean registerCustomer(Customer customer);
 
 	public boolean registerGymOwner(GymOwner gymOwner);
+	
+	public boolean updatePassword(String email, String newPassword);
 }

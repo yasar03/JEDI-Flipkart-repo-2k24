@@ -1,6 +1,7 @@
 package com.flipfit.application;
 
 import com.flipfit.bean.Booking;
+import com.flipfit.bean.Payment;
 import com.flipfit.exception.GymNotFoundException;
 import com.flipfit.exception.NoSlotsFoundException;
 import com.flipfit.utils.IdGenerator;
@@ -50,29 +51,34 @@ public class CustomerMenu {
 		System.out.println("Customer registered successfully!");
 
 	}
+	
+	public void makePayment(String cardNumber, String cvv, String expiryDate, String upiId, String email) {
+		Payment payment = new Payment();
+		String payementId = IdGenerator.generateId("Payment");
+		payment.setPaymentId(payementId);
+		payment.setCardNumber(cardNumber);
+		payment.setCardPIN(cvv);
+		payment.setCardExpiry(expiryDate);
+		payment.setUpiId(upiId);
+		customerBusiness.makePayments(payementId, cardNumber, cvv, expiryDate, upiId, email);
+		
+	}
 
 	public void viewGyms(String email) throws ParseException {
 //		getGyms();
 		CustomerBusiness customerBusiness = new CustomerBusiness();
-		System.out.println(customerBusiness.fetchGymList());
+//		System.out.println(customerBusiness.fetchGymList());
 		
 		List<Gym> gym = customerBusiness.fetchGymList();
 		
-		for(Gym g:gym) {
+		gym.forEach(g -> {
 			System.out.println("Gym ID: "+g.getGymId());
 			System.out.println("Gym Name: "+g.getGymName());
 			System.out.println("Gym Owner Email: "+g.getOwnerEmail());
 			System.out.println("Gym Address: "+g.getAddress());
 			System.out.println("Gym Approval Status: "+g.isVerified());
-//			customerBusiness.fetchSlotList(g.getGymId());
-			
-//			for(Slot s:slots) {
-//				System.out.println("Slot ID: "+s.getSlotId());
-////				System.out.println("Slot Start Time: "+s.getStartTime());
-////				System.out.println("Slot End Time: "+s.getEndTime());
-//				System.out.println("Slot Availability: "+customerBusiness.isSlotBooked(s.getSlotId(), new Date()));
-//			}
-		}
+			System.out.println();
+		});
 		System.out.print("Enter gym ID: ");
 		String gymId = sc.next();
 		System.out.print("Enter Date (yyyy-mm-dd): ");
@@ -84,11 +90,90 @@ public class CustomerMenu {
             customerBusiness.fetchSlotList(gymId);
 			System.out.print("Enter the slot ID which you want to book: ");
 			String slotId = sc.next();
+			
+			System.out.println("Mode of Payment: \n1. Online \n2. Offline");
+			System.out.print("Enter your choice: ");
+			int paymentChoice = sc.nextInt();
+			
+			if (paymentChoice == 1) {
+				System.out.println("Payment options: \n1. Credit Card \n2. Debit Card \n3. UPI");
+				System.out.print("Enter your choice: ");
+				int paymentOption = 0;
+				paymentOption = sc.nextInt();
+				if (paymentOption == 1) {
+					System.out.println("Enter Credit Card Number: ");
+					String cardNumber = sc.next();
+					System.out.println("Enter CVV: ");
+					String cvv = sc.next();
+					System.out.println("Enter Expiry Date: ");
+					String expiryDate = sc.next();
+//					System.out.println("Payment successful");
+					makePayment(cardNumber, cvv, expiryDate, null, email);
+				} else if (paymentOption == 2) {
+					System.out.println("Enter Debit Card Number: ");
+					String cardNumber = sc.next();
+					System.out.println("Enter CVV: ");
+					String cvv = sc.next();
+					System.out.println("Enter Expiry Date: ");
+					String expiryDate = sc.next();
+//					System.out.println("Payment successful");
+					makePayment(cardNumber, cvv, expiryDate, null, email);
+				} else if (paymentOption == 3) {
+					System.out.println("Enter UPI ID: ");
+					String upiId = sc.next();
+//					System.out.println("Payment successful");
+					makePayment(null, null, null, upiId, email);
+				} else {
+					System.out.println("Invalid choice");
+				}
+				
+			} else {
+				System.out.println("Payment pending");
+			}
 			addBooking(gymId,slotId, dateStr, email);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-			
-        }
+		}
+		
+//		System.out.println("Mode of Payment: \n1. Online \n2. Offline");
+//		System.out.print("Enter your choice: ");
+//		int paymentChoice = sc.nextInt();
+//
+//		if (paymentChoice == 1) {
+//			System.out.println("Payment options: \n1. Credit Card \n2. Debit Card \n3. UPI");
+//			System.out.print("Enter your choice: ");
+//			int paymentOption = 0;
+//			paymentOption = sc.nextInt();
+//			if (paymentOption == 1) {
+//				System.out.println("Enter Credit Card Number: ");
+//				String cardNumber = sc.next();
+//				System.out.println("Enter CVV: ");
+//				String cvv = sc.next();
+//				System.out.println("Enter Expiry Date: ");
+//				String expiryDate = sc.next();
+//				System.out.println("Payment successful");
+//				makePayment(cardNumber, cvv, expiryDate, null, email);
+//			} else if (paymentOption == 2) {
+//				System.out.println("Enter Debit Card Number: ");
+//				String cardNumber = sc.next();
+//				System.out.println("Enter CVV: ");
+//				String cvv = sc.next();
+//				System.out.println("Enter Expiry Date: ");
+//				String expiryDate = sc.next();
+//				System.out.println("Payment successful");
+//				makePayment(cardNumber, cvv, expiryDate, null, email);
+//			} else if (paymentOption == 3) {
+//				System.out.println("Enter UPI ID: ");
+//				String upiId = sc.next();
+//				System.out.println("Payment successful");
+//				makePayment(null, null, null, upiId, email);
+//			} else {
+//				System.out.println("Invalid choice");
+//			}
+//
+//		} else {
+//			System.out.println("Payment pending");
+//		}
 //		for (Slot slot : slots) {
 //			System.out.print("Slot Id: " + slot.getSlotId());
 //			System.out.print("Availability: " + customerBusiness.isSlotBooked(slot.getSlotId(), date));
@@ -119,28 +204,29 @@ public class CustomerMenu {
 	}
 
 	public void editProfile(String email) {
-		System.out.print("Enter password: ");
-		customer.setPassword(sc.next());
+//		System.out.print("Enter password: ");
+//		customer.setPassword(sc.next());
 		System.out.print("Enter Name: ");
-		customer.setName(sc.next());
+		String name = sc.next();
 		System.out.print("Enter Phone Number: ");
-		customer.setPhoneNumber(sc.next());
+		String phone = sc.next();
 		System.out.print("Enter Age: ");
-		customer.setAge(Integer.valueOf(sc.next()));
+		int age = sc.nextInt();
 		System.out.print("Enter Address: ");
-		customer.setAddress(sc.next());
-		System.out.println("Successfully edited your profile");
+		String address = sc.next();
+		customerBusiness.editProfile(email, name, phone, age, address);
+//		System.out.println("Successfully edited your profile");
 	}
 
 	public void getGyms() {
 		System.out.print("Enter your city: ");
 		List<Gym> gyms = customerBusiness.getGymInCity(sc.next());
-		for (Gym gym : gyms) {
+		gyms.forEach(gym -> {
 			System.out.print("Gym Id: " + gym.getGymId());
 			System.out.print("Gym Owner Email: " + gym.getOwnerEmail());
 			System.out.print("Gym Name: " + gym.getGymName());
 			System.out.println();
-		}
+		});
 	}
 
 	public void cancelBooking(String email) {
@@ -154,7 +240,7 @@ public class CustomerMenu {
 
 		while (choice != 5) {
 			System.out.println("Menu:-");
-			System.out.println("1.View Gyms \n2.View Booked Slots \n3.Cancel Booked Slots \n4. Edit Profile \n5.Exit");
+			System.out.println("1.View Gyms \n2.View Booked Slots \n3.Cancel Booked Slots \n4.Edit Profile \n5.Exit");
 			System.out.print("Enter your choice: ");
 			choice = sc.nextInt();
 

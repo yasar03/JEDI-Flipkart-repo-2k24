@@ -94,7 +94,7 @@ public class AdminMenu {
 }
 			
 	public void viewAllGyms(List<Gym> gyms) {
-		for (Gym gym : gyms) {
+		gyms.forEach(gym -> {
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
 			System.out.println("Gym Id-->" + gym.getGymId());
 			System.out.println("Gym Name-->" + gym.getGymName());
@@ -103,11 +103,11 @@ public class AdminMenu {
 			System.out.println("Gym Slot Count-->" + gym.getSlotCount());
 			System.out.println("Gym Verification -->" + (gym.isVerified() ? "Yes" : "No"));
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
-		}
+		});
 	}
 
 	public void viewAllGymOwners(List<GymOwner> gymOwners) {
-		for (GymOwner gymOwner : gymOwners) {
+		gymOwners.forEach(gymOwner -> {
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
 			System.out.println("Gym Owner Name-->" + gymOwner.getName());
 			System.out.println("Gym Owner phone numver-->" + gymOwner.getPhoneNumber());
@@ -115,7 +115,7 @@ public class AdminMenu {
 			System.out.println("Gym Owner panNumber-->" + gymOwner.getPanNumber());
 			System.out.println("Gym Owner Verification -->" + (gymOwner.isVerified() ? "Yes" : "No"));
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++++");
-		}
+		});
 
 	}
 }
