@@ -79,6 +79,14 @@ public class CustomerBusiness implements CustomerBusinessInterface {
         }
     }
 	
+	public List<Gym> getGymInCity(String city) {
+        try {
+            return customerDAO.getGymInCity(city);
+        } catch (GymNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+	
 	public void fetchSlotList(String gymId) throws NoSlotsFoundException, GymNotFoundException {
 		System.out.println("Fetched Slot list successfully!");
 //        try {
@@ -155,11 +163,11 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 	}
 
 	
-	public List<Gym> getGymInCity(String city) {
-		return gyms.stream()
-			.filter(g -> g.getAddress().equals(city))
-			.collect(Collectors.toList());
-	}
+//	public List<Gym> getGymInCity(String city) {
+//		return gyms.stream()
+//			.filter(g -> g.getAddress().equals(city))
+//			.collect(Collectors.toList());
+//	}
 //	public List<Gym> getGymInCity(String city) {
 //		List<Gym> newGym = new ArrayList<Gym>();
 //		for (Gym gym : gyms) {

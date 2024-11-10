@@ -63,6 +63,74 @@ public class CustomerMenu {
 		customerBusiness.makePayments(payementId, cardNumber, cvv, expiryDate, upiId, email);
 		
 	}
+	
+	
+	public void viewGymsByCity(String email) {
+		System.out.print("Enter your city: ");
+		List<Gym> gyms = customerBusiness.getGymInCity(sc.next());
+		gyms.forEach(gym -> {
+			System.out.println("Gym Id: " + gym.getGymId());
+			System.out.println("Gym Owner Email: " + gym.getOwnerEmail());
+			System.out.println("Gym Name: " + gym.getGymName());
+			System.out.println();
+		});
+		
+		System.out.print("Enter gym ID: ");
+		String gymId = sc.next();
+		System.out.print("Enter Date (yyyy-mm-dd): ");
+		String dateStr = sc.next();
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		Date date = dateFormat.parse(dateStr);
+		
+		try {
+			customerBusiness.fetchSlotList(gymId);
+			System.out.print("Enter the slot ID which you want to book: ");
+			String slotId = sc.next();
+			
+			System.out.println("Mode of Payment: \n1. Online \n2. Offline");
+			System.out.print("Enter your choice: ");
+			int paymentChoice = sc.nextInt();
+			
+			if (paymentChoice == 1) {
+				System.out.println("Payment options: \n1. Credit Card \n2. Debit Card \n3. UPI");
+				System.out.print("Enter your choice: ");
+				int paymentOption = 0;
+				paymentOption = sc.nextInt();
+				if (paymentOption == 1) {
+					System.out.println("Enter Credit Card Number: ");
+					String cardNumber = sc.next();
+					System.out.println("Enter CVV: ");
+					String cvv = sc.next();
+					System.out.println("Enter Expiry Date: ");
+					String expiryDate = sc.next();
+//					System.out.println("Payment successful");
+					makePayment(cardNumber, cvv, expiryDate, null, email);
+				} else if (paymentOption == 2) {
+					System.out.println("Enter Debit Card Number: ");
+					String cardNumber = sc.next();
+					System.out.println("Enter CVV: ");
+					String cvv = sc.next();
+					System.out.println("Enter Expiry Date: ");
+					String expiryDate = sc.next();
+//					System.out.println("Payment successful");
+					makePayment(cardNumber, cvv, expiryDate, null, email);
+				} else if (paymentOption == 3) {
+					System.out.println("Enter UPI ID: ");
+					String upiId = sc.next();
+//					System.out.println("Payment successful");
+					makePayment(null, null, null, upiId, email);
+				} else {
+					System.out.println("Invalid choice");
+				}
+				
+			} else {
+				System.out.println("Payment pending");
+			}
+			addBooking(gymId,slotId, dateStr, email);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	public void viewGyms(String email) throws ParseException {
 //		getGyms();
@@ -218,16 +286,7 @@ public class CustomerMenu {
 //		System.out.println("Successfully edited your profile");
 	}
 
-	public void getGyms() {
-		System.out.print("Enter your city: ");
-		List<Gym> gyms = customerBusiness.getGymInCity(sc.next());
-		gyms.forEach(gym -> {
-			System.out.print("Gym Id: " + gym.getGymId());
-			System.out.print("Gym Owner Email: " + gym.getOwnerEmail());
-			System.out.print("Gym Name: " + gym.getGymName());
-			System.out.println();
-		});
-	}
+	
 
 	public void cancelBooking(String email) {
 		System.out.print("Enter booking ID that you want to cancel: ");
@@ -240,7 +299,7 @@ public class CustomerMenu {
 
 		while (choice != 5) {
 			System.out.println("Menu:-");
-			System.out.println("1.View Gyms \n2.View Booked Slots \n3.Cancel Booked Slots \n4.Edit Profile \n5.Exit");
+			System.out.println("1.View All Gyms \n2.View Gyms by City\n3.View Booked Slots \n4.Cancel Booked Slots \n5.Edit Profile \n6.Exit");
 			System.out.print("Enter your choice: ");
 			choice = sc.nextInt();
 
@@ -249,15 +308,18 @@ public class CustomerMenu {
 				viewGyms(email);
 				break;
 			case 2:
-				customerBusiness.getBookings(email);
+				viewGymsByCity(email);
 				break;
 			case 3:
-				cancelBooking(email);
+				customerBusiness.getBookings(email);
 				break;
 			case 4:
-				editProfile(email);
+				cancelBooking(email);
 				break;
 			case 5:
+				editProfile(email);
+				break;
+			case 6:
 				break;
 			default:
 				System.out.println("Invalid choice!");

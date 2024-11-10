@@ -22,4 +22,5 @@ public interface CustomerBusinessInterface{
 
     public boolean hasBookedSlotAlready(String slotId, String customerEmail, Date date);
     
+//    public List<Gym> getGymInCity(String city);
 }

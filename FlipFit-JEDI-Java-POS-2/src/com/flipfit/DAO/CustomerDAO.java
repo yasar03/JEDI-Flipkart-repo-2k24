@@ -9,6 +9,8 @@ import com.flipfit.exception.NoSlotsFoundException;
 
 public interface CustomerDAO {
 	public List<Gym> fetchGymList() throws GymNotFoundException;
+	
+	public List<Gym> getGymInCity(String city) throws GymNotFoundException;
 
 	public void fetchSlotList(String gymId) throws GymNotFoundException, NoSlotsFoundException;
 	

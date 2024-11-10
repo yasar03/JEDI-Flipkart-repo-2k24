@@ -48,6 +48,45 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return gyms;
 		
 	}
+	
+	public List<Gym> getGymInCity(String city) throws GymNotFoundException {
+		Connection connection = null;
+		List<Gym> gyms = new ArrayList<Gym>();
+		String query = "select gymId, gymName, ownerEmail, address, slotCount, seatsPerSlotCount, isVerified from gym where address like ?";
+		try {
+			connection = DBUtils.getConnection();
+			// Step 2:Create a statement using connection object
+			PreparedStatement statement = connection.prepareStatement(query);
+			System.out.println(statement);
+			statement.setString(1, "%" + city + "%");
+			// Step 3: Execute the query or update query
+			ResultSet rs = statement.executeQuery();
+			
+//			if (!rs.next()) {
+//				throw new GymNotFoundException("No gyms found");
+//			}
+			// Step 4: Process the ResultSet object.
+			
+			while (rs.next()) {
+				Gym gym = new Gym();
+				gym.setGymId(rs.getString("gymId"));
+				gym.setGymName(rs.getString("gymName"));
+				gym.setOwnerEmail(rs.getString("ownerEmail"));
+				gym.setAddress(rs.getString("address"));
+				gym.setSlotCount(rs.getInt("slotCount"));
+				gym.setSeatsPerSlotCount(rs.getInt("seatsPerSlotCount"));
+				gym.setVerified(rs.getBoolean("isVerified"));
+				gyms.add(gym);
+//	                System.out.println(id + "," + name + "," + email + "," + country + "," + password);
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+//		System.out.println(gyms);
+		return gyms;
+		
+	}
+	
 
 	public void fetchSlotList(String gymId) throws GymNotFoundException, NoSlotsFoundException {
 		Connection connection = null;
