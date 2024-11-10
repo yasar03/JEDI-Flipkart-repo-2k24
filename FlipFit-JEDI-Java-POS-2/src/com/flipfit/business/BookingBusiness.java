@@ -15,8 +15,12 @@ public class BookingBusiness implements BookingBusinessInterface{
 	
 	CustomerDAO customerDAO = new CustomerDAOImpl();
 	
-
-
+	
+	/**
+	 * Checks if a booking is confirmed or not for the given bookingId
+	 * @param bookingId the id of a booking that needs to be checked
+	 * @return true if the bookingId is confirmed else returns false
+	 */
 	public boolean isConfirmed(String bookingId) {
 
 		for(Booking b:bookings)

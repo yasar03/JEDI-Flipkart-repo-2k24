@@ -14,7 +14,9 @@ import com.flipfit.utils.IdGenerator;
 import java.util.Date;
 import java.util.*;
 import java.util.stream.Collectors;
-
+/**
+ *
+ */
 public class CustomerBusiness implements CustomerBusinessInterface {
 
 	List<Customer> customers = new ArrayList<>();
@@ -36,7 +38,11 @@ public class CustomerBusiness implements CustomerBusinessInterface {
             throw new RuntimeException(e);
         }
     }
-	
+	/**
+	 * Obtains all the gyms for the given city.
+	 * @param city the city name for which the gym list is requested
+	 * @return returns List of gyms available for the given city
+	 */
 	public List<Gym> getGymInCity(String city) {
         try {
             return customerDAO.getGymInCity(city);
@@ -56,7 +62,11 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 		}
     }
 	
-
+	/**
+	 * Obtains customer's profile details
+	 * @param customer the Customer object for which the profile details are requested
+	 * @return Customer the Customer's object
+	 */
 	public Customer getProfile(Customer customer) {
 		for (Customer cust : customers) {
 			if (cust.getEmail().equals(customer.getEmail()))
@@ -64,27 +74,43 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 		}
 		return null;
 	}
-
 	
+	/**
+	 * Gives functionality of updating customer's personal data.
+	 
+	 */
 	public void editProfile(String email, String name, String phoneNumber, int age, String address) {
 		customerDAO.editProfile(email, name, phoneNumber, age, address);
 	}
-
 	
+	/**
+	 * Obtains all the bookings done by the given customer email.
+	 * @param email the Customer email for which the bookings data are requested
+	 * @return List of bookings done by the given customer email
+	 */
 	public List<Booking> getBookings(String email) {
 		customerDAO.fetchBookedSlots(email);
 		List<Booking> customerBookings = new ArrayList<>();
 
 		return customerBookings;
 	}
-
+	/**
+	 * Performs booking cancellation operation for the given customer email.
+	 * @param bookingId the id of booking for which cancellation needs to be performed
+	 * @param email the Customer email for which the booking cancellation is requested
+	 * @return returns true of the booking gets cancelled successfully else returns false
+	 */
 	public boolean cancelBooking(String bookingId, String email) {
 		customerDAO.cancelBooking(bookingId, email);
 		return false;
 	}
-
-
-
+	
+	
+	/**
+	 * Obtains all the slots for the given gymId.
+	 * @param gymId the Gym Id for which the slot details are requested
+	 * @return returns List of available slots for the given gymId
+	 */
 	public List<Slot> getSlotInGym(String gymId) {
 		
 		
@@ -92,8 +118,14 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 			.filter(s -> s.getGymId().equals(gymId))
 			.collect(Collectors.toList());
 	}
-
-
+	
+	/**
+	 * Performs booking operation for the given customer email on the given date for the given slotId
+	 * @param email the email of customer who requested the booking operation
+	 * @param slotId the slot id in which the customer wants to book a seat
+	 * @param date the date on which the customer wants to book a seat
+	 * @return returns integer signal based on the customer's booking status
+	 */
 	public void bookSlot(String bookingId, String gymId, String slotId, String date, String email) {
 		CustomerDAO customerDAO = new CustomerDAOImpl();
         try {
@@ -209,12 +241,23 @@ public class CustomerBusiness implements CustomerBusinessInterface {
 			customerDAO.makePayment(paymentId, cardNumber, cvv, expiryDate, upiId, email);
 
 	}
-
+	/**
+	 * Checks if the slot is already booked or not
+	 * @param slotId the slot id for which the booking status is requested
+	 * @param date the date on which the booking status is requested
+	 * @return returns true if the slot id for the given date is fully booked else returns false
+	 */
 	public boolean isSlotBooked(String slotId, String date) {
 		return slots.stream()
 			.anyMatch(s -> s.getSlotId().equals(slotId) && s.getNumOfSeats() <= s.getNumOfSeatsBooked());
 	}
-
+	/**
+	 * Checks if the customer has already booked a seat in the same slot for the given date
+	 * @param slotId the slot id for which the booking status is requested
+	 * @param date the date on which the booking status is requested
+	 * @param customerEmail the email of customer for which the booking status is getting checked
+	 * @return returns true if the customer has already booked a seat on the same date in the same slot
+	 */
 	public boolean hasBookedSlotAlready(String slotId, String customerEmail, Date date) {
 		return bookings.stream()
 			.anyMatch(b -> b.getSlotId().equals(slotId) && b.getCustomerEmail().equals(customerEmail));
