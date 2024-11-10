@@ -25,9 +25,9 @@ public class CustomerDAOImpl implements CustomerDAO{
 			// Step 3: Execute the query or update query
 			ResultSet rs = statement.executeQuery();
 			
-//			if(!rs.next()) {
-//				throw new GymNotFoundException("No gyms found");
-//			}
+			if (!rs.isBeforeFirst()) { // Check if the ResultSet is empty
+				throw new GymNotFoundException("No gyms found");
+			}
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				Gym gym = new Gym();
@@ -61,12 +61,10 @@ public class CustomerDAOImpl implements CustomerDAO{
 			statement.setString(1, "%" + city + "%");
 			// Step 3: Execute the query or update query
 			ResultSet rs = statement.executeQuery();
-			
-//			if (!rs.next()) {
-//				throw new GymNotFoundException("No gyms found");
-//			}
+			if (!rs.isBeforeFirst()) { // Check if the ResultSet is empty
+				throw new GymNotFoundException("No gyms found");
+			}
 			// Step 4: Process the ResultSet object.
-			
 			while (rs.next()) {
 				Gym gym = new Gym();
 				gym.setGymId(rs.getString("gymId"));
@@ -79,6 +77,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 				gyms.add(gym);
 //	                System.out.println(id + "," + name + "," + email + "," + country + "," + password);
 			}
+
 		} catch (SQLException e) {
 			printSQLException(e);
 		}

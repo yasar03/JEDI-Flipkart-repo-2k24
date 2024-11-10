@@ -84,10 +84,8 @@ public class GymOwnerMenu {
 		gym.setAddress(in.next());
 		System.out.print("SlotCount: ");
 		String slotCount = in.next();
-//		gym.setSlotCount(slotCount);
 		System.out.print("SeatsPerSlotCount: ");
 		String seatPerSlotCount = in.next();
-//		gym.setSeatsPerSlotCount(seatPerSlotCount);
 		gym.setVerified(false);
 
 		try {

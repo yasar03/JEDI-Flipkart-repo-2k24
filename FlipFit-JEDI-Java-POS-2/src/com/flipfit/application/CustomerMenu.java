@@ -68,6 +68,10 @@ public class CustomerMenu {
 	public void viewGymsByCity(String email) {
 		System.out.print("Enter your city: ");
 		List<Gym> gyms = customerBusiness.getGymInCity(sc.next());
+		if(gyms.isEmpty()) {
+			System.out.println("No gyms found in the city");
+			return;
+		}
 		gyms.forEach(gym -> {
 			System.out.println("Gym Id: " + gym.getGymId());
 			System.out.println("Gym Owner Email: " + gym.getOwnerEmail());
@@ -79,8 +83,6 @@ public class CustomerMenu {
 		String gymId = sc.next();
 		System.out.print("Enter Date (yyyy-mm-dd): ");
 		String dateStr = sc.next();
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//		Date date = dateFormat.parse(dateStr);
 		
 		try {
 			customerBusiness.fetchSlotList(gymId);
@@ -103,7 +105,6 @@ public class CustomerMenu {
 					String cvv = sc.next();
 					System.out.println("Enter Expiry Date: ");
 					String expiryDate = sc.next();
-//					System.out.println("Payment successful");
 					makePayment(cardNumber, cvv, expiryDate, null, email);
 				} else if (paymentOption == 2) {
 					System.out.println("Enter Debit Card Number: ");
@@ -112,12 +113,10 @@ public class CustomerMenu {
 					String cvv = sc.next();
 					System.out.println("Enter Expiry Date: ");
 					String expiryDate = sc.next();
-//					System.out.println("Payment successful");
 					makePayment(cardNumber, cvv, expiryDate, null, email);
 				} else if (paymentOption == 3) {
 					System.out.println("Enter UPI ID: ");
 					String upiId = sc.next();
-//					System.out.println("Payment successful");
 					makePayment(null, null, null, upiId, email);
 				} else {
 					System.out.println("Invalid choice");
@@ -133,9 +132,8 @@ public class CustomerMenu {
 	}
 
 	public void viewGyms(String email) throws ParseException {
-//		getGyms();
+
 		CustomerBusiness customerBusiness = new CustomerBusiness();
-//		System.out.println(customerBusiness.fetchGymList());
 		
 		List<Gym> gym = customerBusiness.fetchGymList();
 		
@@ -151,8 +149,6 @@ public class CustomerMenu {
 		String gymId = sc.next();
 		System.out.print("Enter Date (yyyy-mm-dd): ");
 		String dateStr = sc.next();
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//		Date date = dateFormat.parse(dateStr);
         
         try {
             customerBusiness.fetchSlotList(gymId);
@@ -175,7 +171,6 @@ public class CustomerMenu {
 					String cvv = sc.next();
 					System.out.println("Enter Expiry Date: ");
 					String expiryDate = sc.next();
-//					System.out.println("Payment successful");
 					makePayment(cardNumber, cvv, expiryDate, null, email);
 				} else if (paymentOption == 2) {
 					System.out.println("Enter Debit Card Number: ");
@@ -184,12 +179,10 @@ public class CustomerMenu {
 					String cvv = sc.next();
 					System.out.println("Enter Expiry Date: ");
 					String expiryDate = sc.next();
-//					System.out.println("Payment successful");
 					makePayment(cardNumber, cvv, expiryDate, null, email);
 				} else if (paymentOption == 3) {
 					System.out.println("Enter UPI ID: ");
 					String upiId = sc.next();
-//					System.out.println("Payment successful");
 					makePayment(null, null, null, upiId, email);
 				} else {
 					System.out.println("Invalid choice");
@@ -203,77 +196,10 @@ public class CustomerMenu {
             System.out.println(e.getMessage());
 		}
 		
-//		System.out.println("Mode of Payment: \n1. Online \n2. Offline");
-//		System.out.print("Enter your choice: ");
-//		int paymentChoice = sc.nextInt();
-//
-//		if (paymentChoice == 1) {
-//			System.out.println("Payment options: \n1. Credit Card \n2. Debit Card \n3. UPI");
-//			System.out.print("Enter your choice: ");
-//			int paymentOption = 0;
-//			paymentOption = sc.nextInt();
-//			if (paymentOption == 1) {
-//				System.out.println("Enter Credit Card Number: ");
-//				String cardNumber = sc.next();
-//				System.out.println("Enter CVV: ");
-//				String cvv = sc.next();
-//				System.out.println("Enter Expiry Date: ");
-//				String expiryDate = sc.next();
-//				System.out.println("Payment successful");
-//				makePayment(cardNumber, cvv, expiryDate, null, email);
-//			} else if (paymentOption == 2) {
-//				System.out.println("Enter Debit Card Number: ");
-//				String cardNumber = sc.next();
-//				System.out.println("Enter CVV: ");
-//				String cvv = sc.next();
-//				System.out.println("Enter Expiry Date: ");
-//				String expiryDate = sc.next();
-//				System.out.println("Payment successful");
-//				makePayment(cardNumber, cvv, expiryDate, null, email);
-//			} else if (paymentOption == 3) {
-//				System.out.println("Enter UPI ID: ");
-//				String upiId = sc.next();
-//				System.out.println("Payment successful");
-//				makePayment(null, null, null, upiId, email);
-//			} else {
-//				System.out.println("Invalid choice");
-//			}
-//
-//		} else {
-//			System.out.println("Payment pending");
-//		}
-//		for (Slot slot : slots) {
-//			System.out.print("Slot Id: " + slot.getSlotId());
-//			System.out.print("Availability: " + customerBusiness.isSlotBooked(slot.getSlotId(), date));
-//		}
 
-		
-//			try {
-
-//			} catch (GymNotFoundException e) {
-//				System.out.println(e.getMessage());
-//			}
-//		switch (bookingResponse) {
-//		case 0:
-//			System.out.println("You have already booked this time. Cancelling the previous one and booking this slot");
-//			break;
-//		case 1:
-//			System.out.println("Slot is already booked, added to the waiting list");
-//			break;
-//		case 2:
-//			System.out.println("Successfully booked the slot");
-//			break;
-//		case 3:
-//			System.out.println("Slot not found");
-//			break;
-//		default:
-//			System.out.println("Booking failed");
-//		}
 	}
 
 	public void editProfile(String email) {
-//		System.out.print("Enter password: ");
-//		customer.setPassword(sc.next());
 		System.out.print("Enter Name: ");
 		String name = sc.next();
 		System.out.print("Enter Phone Number: ");
@@ -283,7 +209,6 @@ public class CustomerMenu {
 		System.out.print("Enter Address: ");
 		String address = sc.next();
 		customerBusiness.editProfile(email, name, phone, age, address);
-//		System.out.println("Successfully edited your profile");
 	}
 
 	
