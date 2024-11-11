@@ -4,6 +4,8 @@ import com.flipfit.bean.Gym;
 import com.flipfit.bean.GymOwner;
 import com.flipfit.business.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -44,6 +46,14 @@ public class AdminMenu {
 	}
 
 	public void adminMenu(Scanner in) throws Exception {
+		LocalDateTime loginTime = LocalDateTime.now();
+		
+		// Format the time for display
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		String formattedLoginTime = loginTime.format(formatter);
+		
+		// Print the login time
+		System.out.println("Login time: " + formattedLoginTime);
 		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
 		while (true) {
 			System.out.println("1. View All Gym ");
