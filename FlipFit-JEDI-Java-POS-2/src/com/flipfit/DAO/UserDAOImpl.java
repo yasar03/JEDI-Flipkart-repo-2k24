@@ -12,7 +12,12 @@ import com.flipfit.constants.*;
 import com.flipfit.utils.DBUtils;
 
 public class UserDAOImpl implements UserDAO {
-
+	
+	/**
+	 * Authenticates the user based on the email and password
+	 * @param user the user object containing email and password
+	 * @return true if the user is authenticated else returns false
+	 */
 	public boolean authenticateUser(User user){
 		// to run without authentication, make isUserValid = true
 		Connection connection = null;
@@ -42,7 +47,12 @@ public class UserDAOImpl implements UserDAO {
 
 		return isUserValid;
 	}
-
+	
+	/**
+	 *
+	 * @param customer the customer object to be registered
+	 * @return true if the customer is registered successfully else returns false
+	 */
 	public boolean registerCustomer(Customer customer) {
 		Connection connection = null;
 		boolean registerSuccess = false;
@@ -76,7 +86,12 @@ public class UserDAOImpl implements UserDAO {
 
 		return registerSuccess;
 	}
-
+	
+	/**
+	 *
+	 * @param gymOwner the gym owner object to be registered
+	 * @return true if the gym owner is registered successfully else returns false
+	 */
 	public boolean registerGymOwner(GymOwner gymOwner) {
 		Connection connection = null;
 		boolean registerSuccess = false;
@@ -112,6 +127,12 @@ public class UserDAOImpl implements UserDAO {
 		return registerSuccess;
 	}
 	
+	/**
+	 *
+	 * @param email the email of the user whose password needs to be updated
+	 * @param password the new password
+	 * @return true if the password is updated successfully else returns false
+	 */
 	public boolean updatePassword(String email, String password) {
 		Connection connection = null;
 		String query = "UPDATE user SET password = ? WHERE email = ?";

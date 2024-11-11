@@ -13,7 +13,17 @@ import com.flipfit.exception.*;
 import com.flipfit.utils.DBUtils;
 
 public class CustomerDAOImpl implements CustomerDAO{
-
+	/**
+	 * Fetches the list of gyms
+	 * @return List<Gym> the list of gyms available
+	 * @throws GymNotFoundException if no gyms are found in the database
+	 * @throws SQLException if an error occurs while fetching the gyms
+	 * @throws ClassNotFoundException if the JDBC driver class is not found
+	 * @throws GymNotFoundException if no gyms are found in the database
+	 * @throws SQLException if an error occurs while fetching the gyms
+	 * @throws ClassNotFoundException if the JDBC driver class is not found
+	 *
+	 */
 	public List<Gym> fetchGymList() throws GymNotFoundException{
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
@@ -49,6 +59,12 @@ public class CustomerDAOImpl implements CustomerDAO{
 		
 	}
 	
+	/**
+	 * Fetches the list of gyms in the given city
+	 * @param city the city name for which the gym list is requested
+	 * @return List<Gym> the list of gyms available in the given city
+	 * @throws GymNotFoundException if no gyms are found in the given city
+	 */
 	public List<Gym> getGymInCity(String city) throws GymNotFoundException {
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
@@ -86,7 +102,12 @@ public class CustomerDAOImpl implements CustomerDAO{
 		
 	}
 	
-
+	/**
+	 * Fetches the list of slots for the given gym
+	 * @param gymId the gym id for which the slot list is requested
+	 * @throws GymNotFoundException if no gym is found for the given gymId
+	 * @throws NoSlotsFoundException if no slots are found for the given gymId
+	 */
 	public void fetchSlotList(String gymId) throws GymNotFoundException, NoSlotsFoundException {
 		Connection connection = null;
 		String query = "Select * From Slot Where gymId=?";
@@ -117,7 +138,11 @@ public class CustomerDAOImpl implements CustomerDAO{
 			printSQLException(sqlExcep);
 		}
 	}
-
+	
+	/**
+	 * Fetches the list of slots for the given gym
+	 * @param email the email for which the slot list is requested
+	 */
 	public void fetchBookedSlots(String email) {
 		Connection connection = null;
 		String query = "Select * From Booking where customerEmail = ?";
@@ -139,6 +164,16 @@ public class CustomerDAOImpl implements CustomerDAO{
 		}
 	}
 	
+	/**
+	 *
+	 * @param bookingId
+	 * @param slotId
+	 * @param gymId
+	 * @param type
+	 * @param date
+	 * @param customerEmail
+	 * @throws GymNotFoundException
+	 */
 	public void bookSlots(String bookingId, String slotId, String gymId, String type, String date, String customerEmail) throws GymNotFoundException {
 		Connection connection = null;
 		String query = "INSERT INTO Booking (bookingId,slotId,gymId,type,date,customerEmail) values(?, ?, ?,?, ?, ?)";
@@ -197,7 +232,13 @@ public class CustomerDAOImpl implements CustomerDAO{
 			printSQLException(sqlExcep);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param slotId the slot id for which the booking status is requested
+	 * @param date the date for which the booking status is requested
+	 * @return true if the slot is already booked else returns false
+	 */
 	public boolean isFull(String slotId, String date) {
 		Connection connection = null;
 		String query = "Select * slot where slotId=? and (numOfSeatsBooked>=numOfSeats)";
@@ -236,7 +277,12 @@ public class CustomerDAOImpl implements CustomerDAO{
 
 		return false;
 	}
-
+	
+	/**
+	 *
+	 * @param bookingId the booking id for which the booking is to be cancelled
+	 * @param email the email of the customer who wants to cancel the booking
+	 */
 	public void cancelBooking(String bookingId, String email) {
 		Connection connection = null;
 		String query = "Delete from Booking where bookingId = ?";
@@ -251,7 +297,13 @@ public class CustomerDAOImpl implements CustomerDAO{
 			printSQLException(sqlExcep);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param slotId the slot id for which the booking status is requested
+	 * @param gymId the gym id for which the booking status is requested
+	 * @return true if the slot exists else returns false
+	 */
 	public boolean checkSlotExists(String slotId, String gymId) {
 		Connection connection = null;
 		String query = "select isVerified from slot where slotId=? and gymId =  ?";
@@ -271,7 +323,12 @@ public class CustomerDAOImpl implements CustomerDAO{
 
 		return false;
 	}
-
+	
+	/**
+	 *
+	 * @param gymId the gym id for which the booking status is requested
+	 * @return true if the gym is verified else returns false
+	 */
 	public boolean checkGymApprove(String gymId) {
 		Connection connection = null;
 		String query = "select isVerified from gym where gymId =  ?";

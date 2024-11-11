@@ -17,6 +17,11 @@ import java.util.List;
  */
 public class AdminDAOImpl implements AdminDAO {
 	Connection connection = null;
+	
+	/**
+	 *
+	 * @return List<GymOwner> the list of all gym owners in the database
+	 */
 	public List<GymOwner> getAllGymOwners() {
 		List<GymOwner> gymOwners = new ArrayList<GymOwner>();
 		String query = "select email, name, phoneNum, aadharNum, panNum, isVerified from gymOwner";
@@ -46,6 +51,10 @@ public class AdminDAOImpl implements AdminDAO {
 		return gymOwners;
 	};
 	
+	/**
+	 *
+	 * @return List<Gym> the list of all gyms in the database
+	 */
 	public List<Gym> getAllGyms() {
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
@@ -77,6 +86,10 @@ public class AdminDAOImpl implements AdminDAO {
 		return gyms;
 	};
 	
+	/**
+	 *
+	 * @return List<GymOwner> the list of all gym owners in the database who are not verified
+	 */
 	public List<GymOwner> getPendingGymOwnerRequests() {
 		Connection connection = null;
 		List<GymOwner> gymOwners = new ArrayList<GymOwner>();
@@ -109,6 +122,10 @@ public class AdminDAOImpl implements AdminDAO {
 		
 	};
 	
+	/**
+	 *
+	 * @return List<Gym> the list of all gyms in the database which are not verified
+	 */
 	public List<Gym> getPendingGymRequests() {
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
@@ -142,6 +159,13 @@ public class AdminDAOImpl implements AdminDAO {
 		
 	};
 	
+	/**
+	 *
+	 * @param gymOwnerEmail the email of the gym owner whose request needs to be approved
+	 *                      This method approves the gym owner request by setting isVerified to 1
+	 *                      in the gymOwner table
+	 *
+	 */
 	public void approveSingleOwnerRequest(String gymOwnerEmail) {
 		Connection connection = null;
 		String SQL_APPROVE_GYM_OWNER_BY_ID="update gymOwner set isVerified=1 WHERE email=?;";
@@ -157,6 +181,11 @@ public class AdminDAOImpl implements AdminDAO {
 	        }
 	};
 	
+	/**
+	 *
+	 * This method approves all the gym owner requests by setting isVerified to 1
+	 * in the gymOwner table
+	 */
 	public void approveAllOwnerRequest() {
 		Connection connection = null;
 		String SQL_APPROVE_ALL_GYMS="update gymOwner set isVerified=1;";
@@ -171,6 +200,13 @@ public class AdminDAOImpl implements AdminDAO {
 	        }
 	};
 	
+	/**
+	 *
+	 * @param gymId the id of the gym whose request needs to be approved
+	 *              This method approves the gym request by setting isVerified to 1
+	 *              in the gym table
+	 *
+	 */
 	public void approveSingleGymRequest(String gymId) {
 		Connection connection = null;
 		String SQL_APPROVE_GYM_BY_ID="update gym set isVerified=1 where gymId = ?;";

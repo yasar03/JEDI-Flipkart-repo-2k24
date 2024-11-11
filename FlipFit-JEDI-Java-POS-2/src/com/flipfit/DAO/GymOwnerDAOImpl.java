@@ -13,7 +13,11 @@ import com.flipfit.bean.*;
 import com.flipfit.utils.DBUtils;
 
 public class GymOwnerDAOImpl implements GymOwnerDAO{
-
+	/**
+	 * Obtains gym owner's profile details
+	 * @param gymOwnerEmailId the email of the gym owner whose profile details are requested
+	 * @return GymOwner the gym owner object
+	 */
 	public GymOwner getGymOwnerDetails(String gymOwnerEmailId) {
 		Connection connection = null;
 		GymOwner gymOwner = new GymOwner();
@@ -43,7 +47,11 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 		// Step 4: try-with-resource statement will auto close the connection.
 		return gymOwner;
 	}
-
+	
+	/**
+	 *
+	 * @param gymOwnerDetails the gym owner object to be added
+	 */
 	public void addGymOwnerDetails(GymOwner gymOwnerDetails) {
 		Connection connection = null;
 		String INSERT_USER_SQL = "INSERT INTO user" + " (email, password, role) VALUES " + "(?, ?, ?);";
@@ -88,7 +96,11 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 			printSQLException(e);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param gymOwnerDetails the gym owner object to be edited with new details
+	 */
 	public void editGymOwnerDetails(GymOwner gymOwnerDetails) {
 		Connection connection = null;
 		String UPDATE_USER_SQL = "update user set email = ?, password = ?, role = ?" + " where email = ?;";
@@ -131,7 +143,12 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 			printSQLException(e);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param gymId the gym id of the gym to be fetched
+	 * @return Gym the gym object
+	 */
 	public Gym getGym(String gymId) {
 		Connection connection = null;
 		Gym gym = new Gym();
@@ -163,7 +180,11 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 		// Step 4: try-with-resource statement will auto close the connection.
 		return gym;
 	}
-
+	
+	/**
+	 *
+	 * @param gymDetails the gym object to be added to the database
+	 */
 	public void addGym(Gym gymDetails) {
 		Connection connection = null;
 		String INSERT_GYM_SQL = "INSERT INTO gym"
@@ -191,7 +212,11 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 			printSQLException(e);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param gymDetails the gym object to be edited with new details in the database
+	 */
 	public void editGym(Gym gymDetails) {
 		Connection connection = null;
 		String INSERT_GYM_SQL = "update gym"
@@ -222,7 +247,12 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 			printSQLException(e);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param gymOwnerId the gym owner's email for which the list of gyms is requested
+	 * @return List<Gym> the list of gyms owned by the given gym owner
+	 */
 	public List<Gym> getGymsOfGymOwner(String gymOwnerId) {
 		Connection connection = null;
 		List<Gym> gyms = new ArrayList<Gym>();
@@ -286,7 +316,11 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 		// Step 4: try-with-resource statement will auto close the connection.
 		return slots;
 	}
-
+	
+	/**
+	 *
+	 * @param slot the slot object to be added to the database
+	 */
 	public void addSlot(Slot slot) {
 		Connection connection = null;
 		String INSERT_SLOT_SQL = "INSERT INTO slot" + "  (slotId, gymId, startTime, endTime, trainer, numOfSeats, numOfSeatsBooked) VALUES "
@@ -314,7 +348,12 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 			printSQLException(e);
 		}
 	}
-
+	
+	/**
+	 *
+	 * @param email the gym owner's email for which the verification status is requested
+	 * @return true if the gym owner is verified else returns false;
+	 */
 	public boolean checkOwnerApproval(String email) {
 		Connection connection = null;
 		String query = "select isVerified from gymOwner where email =  ?";
@@ -335,7 +374,12 @@ public class GymOwnerDAOImpl implements GymOwnerDAO{
 		// Step 4: try-with-resource statement will auto close the connection.
 		return false;
 	}
-
+	
+	/**
+	 *
+	 * @param gymId the gym id for which the verification status is requested
+	 * @return true if the gym is verified else returns false;
+	 */
 	public boolean checkGymApproval(String gymId) {
 		Connection connection = null;
 		String query = "select isVerified from gym where gymId =  ?";
