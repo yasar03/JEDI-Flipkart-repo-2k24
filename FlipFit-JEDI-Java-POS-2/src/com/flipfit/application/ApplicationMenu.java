@@ -9,7 +9,9 @@ import com.flipfit.bean.User;
 import com.flipfit.business.UserBusiness;
 
 public class ApplicationMenu {
-	
+	/**
+	 * Method to update password
+	 */
 	public static void updatePassword() {
 		Scanner in = new Scanner(System.in);
 		System.out.println("__________________________________________________________________________________\n");
@@ -32,7 +34,11 @@ public class ApplicationMenu {
 			System.out.println("Password Update Failed!");
 		}
 	}
-
+	
+	/**
+	 * Method to login to the FlipFit application
+	 * @throws Exception
+	 */
 	public static void login() throws Exception {
 		Scanner in = new Scanner(System.in);
 		System.out.println("__________________________________________________________________________________\n");
@@ -79,6 +85,10 @@ public class ApplicationMenu {
 		}
 	}
 
+	/**
+	 * Method to display the application menu
+	 * @throws Exception
+	 */
 	public static void applicationMenu() throws Exception {
 		boolean recur = true;
 		System.out.println("Welcome to the FlipFit Application!");
@@ -124,7 +134,12 @@ public class ApplicationMenu {
 		}
 
 	}
-
+	
+	/**
+	 * Main method
+	 * @param args the command line arguments
+	 * @throws Exception 
+	 */
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		applicationMenu();
