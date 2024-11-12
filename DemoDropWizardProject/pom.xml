@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.flipkart.jedi</groupId>
-  <artifactId>JEDI-Groupname-FlipFit-DropWizard-RestApi</artifactId>
+  <artifactId>JEDI-GroupC-FlipFit-DropWizard-RestApi</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
